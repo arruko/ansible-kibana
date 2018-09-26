@@ -1,0 +1,12 @@
+---
+kibana_pkg_name: kibana
+kibana_version: 6.4.1
+kibana_elasticsearch_repo_gpg: https://packages.elastic.co/GPG-KEY-elasticsearch
+kibana_repository_url: "deb https://packages.elastic.co/kibana/{{ kibana_version }}/debian stable main"
+kibana_server_port: 5601
+kibana_server_host: "{{ ansible_host | default('127.0.0.1') }}"
+kibana_elasticsearch_username: admin
+kibana_elasticsearch_password: admin
+kibana_elasticsearch_inventory_group_name: elasticsearch
+kibana_elasticsearch_url: "{{ groups[logstash_elasticsearch_inventory_group_name] | map('extract', hostvars, ['ansible_host']) | list }}"
+kibana_pkg_lock: false

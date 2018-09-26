@@ -1,0 +1,11 @@
+---
+- name: RedHat | add Elasticsearch GPG key.
+  rpm_key:
+    key: "{{ kibana_elasticsearch_repo_gpg }}"
+    state: present
+
+- name: RedHat | add Kibana repository.
+  template:
+    src: kibana.repo.j2
+    dest: /etc/yum.repos.d/kibana.repo
+    mode: 0644
