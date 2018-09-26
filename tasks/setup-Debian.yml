@@ -1,0 +1,16 @@
+---
+- name: Debian | ensure apt-transport-https is present
+  apt: 
+    name: apt-transport-https
+    state: present
+
+- name: Debian | add Elasticsearch apt key
+  apt_key:
+    url: "{{ kibana_elasticsearch_repo_gpg }}"
+    state: present
+
+- name: Debian | add Kibana repository
+  apt_repository:
+    repo: "{{ kibana_repository_url }}"
+    state: present
+    update_cache: yes

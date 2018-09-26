@@ -1,0 +1,32 @@
+---
+- include: Main | setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: Main | setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Main | install Kibana pacakge from apt
+  package:
+    name: kibana
+    state: present
+
+- name: Main | ensure Kibana is started and enabled at boot
+  service:
+    name: kibana
+    state: started
+    enabled: yes
+
+- name: Main | write kibana settings
+  template:
+    src: kibana.yml.j2
+    dest: "/opt/kibana/config/kibana.yml"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart kibana
+
+- name: Main | lock kibana version
+  dpkg_selections:
+    name: "{{ kibana_pkg_name }}"
+    selection: hold
+  when: kibana_pkg_lock
